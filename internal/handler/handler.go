@@ -18,9 +18,23 @@ func NewHandler(service *service.Service) *Handler {
 func (h *Handler) InitRoutes() *gin.Engine {
 	router := gin.Default()
 
-	router.GET("/", func(c *gin.Context) {
-		c.String(200, "Hello, Gin!")
-	})
+	viruses := router.Group("/viruses")
+	{
+		viruses.GET("/", h.getAllVirus)
+		viruses.POST("/", h.createVirus)
+		viruses.DELETE("/:virus_id", h.deleteVirus)
+		viruses.GET("/:virus_id", h.getVirusById)
+		viruses.PUT("/:virus_id", h.updateVirus)
+	}
+
+	sites := router.Group("/sites")
+	{
+		sites.POST("/", h.createSite)
+		sites.GET("/", h.getAllSites)
+		sites.GET("/:site_id", h.getSiteById)
+		sites.DELETE("/:site_id", h.deleteSite)
+		sites.PUT("/:site_id", h.updateSite)
+	}
 
 	return router
 }
