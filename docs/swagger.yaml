@@ -1,0 +1,113 @@
+basePath: /
+definitions:
+  app.User:
+    properties:
+      name:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - name
+    - password
+    - username
+    type: object
+  app.Virus:
+    properties:
+      infection_method:
+        type: string
+      severity:
+        type: string
+      virus_id:
+        type: integer
+      virus_name:
+        type: string
+      virus_type:
+        type: string
+    type: object
+  handler.errorResponse:
+    properties:
+      message:
+        type: string
+    type: object
+host: localhost:8000
+info:
+  contact: {}
+  description: API Server for View viruses application
+  title: Rest API Attacks
+  version: "1.0"
+paths:
+  /auth/sing-up:
+    post:
+      consumes:
+      - application/json
+      description: create account
+      operationId: create account
+      parameters:
+      - description: account info
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/app.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: integer
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: SignUp
+      tags:
+      - auth
+  /viruses:
+    post:
+      consumes:
+      - application/json
+      description: create app Virus
+      operationId: create-virus
+      parameters:
+      - description: virus info
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/app.Virus'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: integer
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Create app Virus
+      tags:
+      - viruses
+swagger: "2.0"

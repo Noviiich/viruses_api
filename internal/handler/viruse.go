@@ -7,6 +7,19 @@ import (
 	"strconv"
 )
 
+// @Summary Create app Virus
+// @Security ApiKeyAuth
+// @Description create app Virus
+// @ID create-virus
+// @Tags viruses
+// @Accept       json
+// @Produce      json
+// @Param input body app.Virus true "virus info"
+// @Success      200  {integer}   integer 1
+// @Failure      400  {object}  errorResponse
+// @Failure      404  {object}  errorResponse
+// @Failure      500  {object}  errorResponse
+// @Router       /viruses [post]
 func (h *Handler) createVirus(c *gin.Context) {
 	var input app.Virus
 	if err := c.BindJSON(&input); err != nil {
@@ -26,13 +39,18 @@ func (h *Handler) createVirus(c *gin.Context) {
 }
 
 func (h *Handler) getAllVirus(c *gin.Context) {
+	id, _ := c.Get(userCtx)
+
 	viruses, err := h.service.Virus.GetAll()
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, viruses)
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"viruses": viruses,
+		"userId":  id,
+	})
 }
 
 func (h *Handler) getVirusById(c *gin.Context) {

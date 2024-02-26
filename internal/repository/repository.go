@@ -8,6 +8,21 @@ import (
 type Repository struct {
 	Virus
 	Site
+	Attack
+	Authorization
+}
+
+type Authorization interface {
+	CreateUser(user app.User) (int, error)
+	GetUser(username, password string) (app.User, error)
+}
+
+type Attack interface {
+	Create(attack app.Attack) (int, error)
+	GetAll() ([]app.Attack, error)
+	GetById(attackId int) (app.Attack, error)
+	Delete(attackId int) error
+	Update(attackId int, input app.AttackUpdate) error
 }
 
 type Virus interface {
@@ -28,7 +43,9 @@ type Site interface {
 
 func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
-		Virus: NewVirusPostgres(db),
-		Site:  NewSitePostgres(db),
+		Virus:         NewVirusPostgres(db),
+		Site:          NewSitePostgres(db),
+		Attack:        NewAttackPostgres(db),
+		Authorization: NewAuthPostgres(db),
 	}
 }

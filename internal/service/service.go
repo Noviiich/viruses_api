@@ -5,6 +5,20 @@ import (
 	"rest_api/internal/repository"
 )
 
+type Authorization interface {
+	CreateUser(user app.User) (int, error)
+	GenerateToken(username, password string) (string, error)
+	ParseToken(token string) (int, error)
+}
+
+type Attack interface {
+	Create(attack app.Attack) (int, error)
+	GetAll() ([]app.Attack, error)
+	GetById(attackId int) (app.Attack, error)
+	Delete(attackId int) error
+	Update(attackId int, input app.AttackUpdate) error
+}
+
 type Virus interface {
 	Create(vir app.Virus) (int, error)
 	GetAll() ([]app.Virus, error)
@@ -24,11 +38,15 @@ type Site interface {
 type Service struct {
 	Virus
 	Site
+	Attack
+	Authorization
 }
 
 func NewService(repo *repository.Repository) *Service {
 	return &Service{
-		Virus: NewVirusService(repo.Virus),
-		Site:  NewSiteService(repo.Site),
+		Virus:         NewVirusService(repo.Virus),
+		Site:          NewSiteService(repo.Site),
+		Attack:        NewAttackService(repo.Attack),
+		Authorization: NewAuthService(repo.Authorization),
 	}
 }

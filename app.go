@@ -11,10 +11,10 @@ type Virus struct {
 }
 
 type Site struct {
-	SiteID   int       `json:"site_id" db:"site_id"`
-	SiteName string    `json:"site_name" db:"site_name"`
-	HackDate time.Time `json:"hack_date" db:"hack_date"`
-	VirusID  int       `json:"virus_id" db:"virus_id"`
+	SiteID        int    `json:"site_id" db:"site_id"`
+	SiteName      string `json:"site_name" db:"site_name"`
+	SecurityLevel string `json:"security_level" db:"security_level"`
+	OwnerContact  string `json:"owner_contact" db:"owner_contact"`
 }
 
 type VirusUpdate struct {
@@ -25,7 +25,20 @@ type VirusUpdate struct {
 }
 
 type SiteUpdate struct {
-	VirusID  *int       `json:"virus_id"`
-	SiteName *string    `json:"site_name"`
-	HackDate *time.Time `json:"hack_date"`
+	SiteName      *string `json:"site_name"`
+	SecurityLevel *string `json:"security_level"`
+	OwnerContact  *string `json:"owner_contact"`
+}
+
+type Attack struct {
+	AttackId int       `db:"id" json:"id"`
+	VirusID  int       `db:"virus_id" json:"virus_id"`
+	SiteID   int       `json:"site_id" db:"site_id"`
+	HackDate time.Time `json:"hack_date" db:"hack_date"`
+}
+
+type AttackUpdate struct {
+	VirusID  *int       `db:"virus_id" json:"virus_id"`
+	SiteID   *int       `json:"site_id" db:"site_id"`
+	HackDate *time.Time `json:"hack_date" db:"hack_date"`
 }

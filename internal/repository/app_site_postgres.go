@@ -23,8 +23,8 @@ func (r *SitePostgres) Create(site app.Site) (int, error) {
 	}
 
 	var siteId int
-	createSiteQuery := fmt.Sprintf("INSERT INTO %s (site_name, hack_date, virus_id) VALUES ($1, $2, $3) RETURNING site_id", sitesTable)
-	row := tx.QueryRow(createSiteQuery, site.SiteName, site.HackDate, site.VirusID)
+	createSiteQuery := fmt.Sprintf("INSERT INTO %s (site_name, security_level, owner_contact) VALUES ($1, $2, $3) RETURNING site_id", sitesTable)
+	row := tx.QueryRow(createSiteQuery, site.SiteName, site.SecurityLevel, site.OwnerContact)
 	if err := row.Scan(&siteId); err != nil {
 		tx.Rollback()
 		return 0, nil
@@ -69,15 +69,15 @@ func (r *SitePostgres) Update(siteId int, input app.SiteUpdate) error {
 		argId++
 	}
 
-	if input.HackDate != nil {
-		setValues = append(setValues, fmt.Sprintf("hack_date = $%d", argId))
-		args = append(args, *input.HackDate)
+	if input.OwnerContact != nil {
+		setValues = append(setValues, fmt.Sprintf("owner_contact = $%d", argId))
+		args = append(args, *input.OwnerContact)
 		argId++
 	}
 
-	if input.VirusID != nil {
-		setValues = append(setValues, fmt.Sprintf("virus_id = $%d", argId))
-		args = append(args, *input.VirusID)
+	if input.SecurityLevel != nil {
+		setValues = append(setValues, fmt.Sprintf("security_level = $%d", argId))
+		args = append(args, *input.SecurityLevel)
 		argId++
 	}
 

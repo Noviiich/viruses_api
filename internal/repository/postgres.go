@@ -6,8 +6,10 @@ import (
 )
 
 const (
-	virusesTable = "viruses"
-	sitesTable   = "sites"
+	virusesTable    = "virus"
+	sitesTable      = "site"
+	attackListTable = "attack_list"
+	usersTable      = "users"
 )
 
 type Config struct {
