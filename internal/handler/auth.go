@@ -1,9 +1,11 @@
 package handler
 
 import (
-	"github.com/gin-gonic/gin"
+	"log"
 	"net/http"
 	app "rest_api"
+
+	"github.com/gin-gonic/gin"
 )
 
 // @Summary SignUp
@@ -39,6 +41,7 @@ func (h *Handler) signUp(c *gin.Context) {
 
 func (h *Handler) signIn(c *gin.Context) {
 	var input app.SignInInput
+	log.Print(input)
 
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
